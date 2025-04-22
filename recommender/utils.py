@@ -19,7 +19,7 @@ class VaccineRecommender:
         self.load_dataset()
         
         # Configure Gemma API - You should use environment variables for API keys in production
-        self.api_key = os.environ.get('GEMMA_API_KEY', '')
+        self.api_key = os.environ.get('GEMMA_API_KEY', 'AIzaSyBEZiyp9fPBjqZBblyPcdUvBYWw3gnxtyM')
         genai.configure(api_key=self.api_key)
     
     def load_models(self):
@@ -119,30 +119,48 @@ class VaccineRecommender:
             return "No future vaccines available.", "N/A"
     
     def llm_analysis(self, age, unit, applicable_vaccines, next_vaccine, time_remaining):
-        """Generate LLM-based analysis of vaccine recommendations"""
-        try:
-            # Create appropriate message based on available vaccines
-            if applicable_vaccines.empty:
-                message = f"The user aged {age} {unit} is not eligible for any vaccine currently. " \
-                        f"The next applicable vaccine will be {next_vaccine}, available in {time_remaining}."
-            else:
-                vaccines = ", ".join(applicable_vaccines['Vaccine'].tolist())
-                doses = ", ".join(applicable_vaccines['Dose'].tolist())
-                message = f"For the age of {age} {unit}, the recommended vaccines are: {vaccines} with doses: {doses}. " \
-                        f"The next vaccine will be {next_vaccine}, available in {time_remaining}."
+         prompt = f"""
+                    You are an AI healthcare assistant. Analyze the vaccine dataset and provide the most accurate vaccine recommendation.
+                    Given the dataset, provide a detailed explanation of the vaccines required for a {age} {unit}-old child.
+                    Mention the applicable vaccines, doses, and when the next vaccine is due.
+
+                    Applicable Vaccines: {', '.join(applicable_vaccines['Vaccine'].tolist()) if not applicable_vaccines.empty else 'None'}
+                    Doses: {', '.join(applicable_vaccines['Dose'].tolist()) if not applicable_vaccines.empty else 'None'}
+                    Next Vaccine: {next_vaccine}, Available in: {time_remaining}.
+               """
+
+         # Generate natural language response using Gemma LLM
+         model = genai.GenerativeModel('gemini-1.5-pro')
+         response = model.generate_content(prompt)
+
+         return response.text
+            #  """Alternative LLM analysis using Gemma"""
+           # """Generate a natural language response using Gemma LLM"""
+        
+        
+        # try:
+        #     # Create appropriate message based on available vaccines
+        #     if applicable_vaccines.empty:
+        #         message = f"The user aged {age} {unit} is not eligible for any vaccine currently. " \
+        #                 f"The next applicable vaccine will be {next_vaccine}, available in {time_remaining}."
+        #     else:
+        #         vaccines = ", ".join(applicable_vaccines['Vaccine'].tolist())
+        #         doses = ", ".join(applicable_vaccines['Dose'].tolist())
+        #         message = f"For the age of {age} {unit}, the recommended vaccines are: {vaccines} with doses: {doses}. " \
+        #                 f"The next vaccine will be {next_vaccine}, available in {time_remaining}."
             
-            # Skip LLM generation if API key is not available
-            if not self.api_key:
-                return message
+        #     # Skip LLM generation if API key is not available
+        #     if not self.api_key:
+        #         return message
                 
-            # Generate natural language response using Gemma LLM
-            model = genai.GenerativeModel('gemini-1.5-pro')
-            response = model.generate_content(message)
-            return response.text
+        #     # Generate natural language response using Gemma LLM
+        #     model = genai.GenerativeModel('gemini-1.5-pro')
+        #     response = model.generate_content(message)
+        #     return response.text
             
-        except Exception as e:
-            # Fallback to basic message if LLM fails
-            return message
+        # except Exception as e:
+        #     # Fallback to basic message if LLM fails
+        #     return message
     
     def recommend_vaccine(self, age, unit):
         """Main function to get vaccine recommendations"""
