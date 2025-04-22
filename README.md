@@ -93,9 +93,14 @@ python manage.py runserver
 4:-Read a detailed explanation powered by Gemini AI
 
 ---
-### 🖥️ Demo Screenshot
+##  Screenshots
 
-![Vaccine Recommender Screenshot](assets/screenshot.png)
+### 🔹 Home Page
+![Home Page](index.png)
+
+### 🔹 Result Page
+![Result Page](result_v.png)
+
 
     
 
