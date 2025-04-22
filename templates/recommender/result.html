@@ -1,0 +1,172 @@
+<!-- recommender/templates/recommender/result.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccine Recommendations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+       body {
+    background-image: url('https://media.istockphoto.com/id/1290877425/photo/used-syringes-and-ampoules-isolated-on-a-black-background-copy-space-medical-injecting.jpg?s=2048x2048&w=is&k=20&c=OAW2jcXhGTjStnwXCCzBof30kFyQcpLKhLTs7XwWWio=');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Frosted glass card */
+.card {
+    backdrop-filter: blur(10px);
+    background-color: rgba(18, 16, 16, 0.62);
+    border: 1px solid rgba(36, 24, 24, 0.92);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    color: white;
+    padding: 20px;
+}
+
+/* Card header with dark transparent tone */
+.card-header {
+    background-color: rgba(31, 89, 140, 0.63);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+}
+
+/* Inputs: black background, white text */
+.form-control, .form-select {
+    background-color: black !important;
+    color: white !important;
+    border: 1px solid rgba(37, 23, 23, 0.4);
+    border-radius: 8px;
+}
+
+.form-control::placeholder {
+    color: rgba(71, 35, 35, 0.7) !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: black !important;
+    color: white !important;
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+}
+
+.form-label {
+    color: white;
+}
+
+/* Primary button */
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+}
+
+/* Vaccine-specific card styles */
+.vaccine-card {
+    border-left: 4px solid #0d6efd;
+    background-color: rgba(13, 109, 253, 0.12);
+    border-radius: 8px;
+    padding: 15px;
+    color: white;
+}
+
+/* Next vaccine highlight */
+.next-vaccine {
+    border-left: 4px solidrgb(25, 22, 12);
+    background-color: rgba(255, 193, 7, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+    color: white;
+}
+
+/* Analysis section */
+.analysis-section {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 20px;
+    color: white;
+}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center mb-0">Vaccine Recommendations</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="mb-4">Results for: {{ result.age }} {{ result.unit }}</h4>
+
+                        <!-- Current Applicable Vaccines -->
+                        <div class="mb-4">
+                            <h5>Current Applicable Vaccines</h5>
+                            {% if result.applicable_vaccines %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Vaccine</th>
+                                            <th>Dose</th>
+                                            <th>Applicable Age</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for vaccine in result.applicable_vaccines %}
+                                        <tr>
+                                            <td>{{ vaccine.Vaccine }}</td>
+                                            <td>{{ vaccine.Dose }}</td>
+                                            <td>{{ vaccine.Applicable_Age }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            {% else %}
+                            <div class="alert alert-warning">
+                                No vaccines applicable for the current age.
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Next Vaccine Information -->
+                        <div class="mb-4 p-3 next-vaccine">
+                            <h5>Next Vaccine Information</h5>
+                            <p><strong>Next Vaccine:</strong> {{ result.next_vaccine }}</p>
+                            <p><strong>Available in:</strong> {{ result.time_remaining }}</p>
+                        </div>
+
+                        <!-- Analysis -->
+                        <div class="mb-4">
+                            <h5>Detailed Analysis</h5>
+                            <div class="analysis-section">
+                                {{ result.analysis|linebreaks }}
+                            </div>
+                        </div>
+
+                        <!-- Back button -->
+                        <div class="d-grid">
+                            <a href="{% url 'recommender:index' %}" class="btn btn-primary">Check Another Age</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

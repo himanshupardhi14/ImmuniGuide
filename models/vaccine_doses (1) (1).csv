@@ -1,0 +1,20 @@
+Vaccine,Dose,Applicable Age
+BCG,Single dose,At birth
+Hepatitis B,Birth dose,Within 24 hours of birth
+Pentavalent (DPT + Hep B + Hib),1st dose,6 weeks
+Pentavalent (DPT + Hep B + Hib),2nd dose,10 weeks
+Pentavalent (DPT + Hep B + Hib),3rd dose,14 weeks
+OPV (Oral Polio Vaccine),1st dose,6 weeks
+OPV (Oral Polio Vaccine),2nd dose,10 weeks
+OPV (Oral Polio Vaccine),3rd dose,14 weeks
+IPV (Inactivated Polio Vaccine),1st dose,14 weeks
+Measles-Rubella (MR),1st dose,9-12 months
+Measles-Rubella (MR),2nd dose,16-24 months
+JE (Japanese Encephalitis),1st dose,9-12 months
+JE (Japanese Encephalitis),2nd dose,16-24 months
+Vitamin A,1st dose,9 months
+Vitamin A,2nd to 9th dose,Every 6 months up to 5 years
+DPT booster,1st booster,16-24 months
+DPT booster,2nd booster,5-6 years
+Td (Tetanus and Diphtheria),1st dose,10 years
+Td (Tetanus and Diphtheria),2nd dose,16 years
