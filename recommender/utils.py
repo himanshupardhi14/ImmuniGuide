@@ -19,7 +19,7 @@ class VaccineRecommender:
         self.load_dataset()
         
         # Configure Gemma API - You should use environment variables for API keys in production
-        self.api_key = os.environ.get('GEMMA_API_KEY', 'AIzaSyBEZiyp9fPBjqZBblyPcdUvBYWw3gnxtyM')
+        self.api_key = os.environ.get('GEMMA_API_KEY', '')
         genai.configure(api_key=self.api_key)
     
     def load_models(self):
